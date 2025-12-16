@@ -60,15 +60,12 @@ struct TaskListView: View {
                     }
                 }
             }
-            .task {
-                await viewModel.loadTasks()
-            }
         }
     }
 }
 
 struct TaskList: View {
-    @StateObject var viewModel: TodoItemViewModel
+    @ObservedObject var viewModel: TodoItemViewModel
     
     var body: some View {
         List {
@@ -81,9 +78,8 @@ struct TaskList: View {
             }
             .onDelete { indexSet in
                 Task {
-                    for index in indexSet {
-                        await viewModel.deleteTask(viewModel.tasks[index])
-                    }
+                    let tasksToDelete = indexSet.map { viewModel.tasks[$0] }
+                    await viewModel.deleteTasks(tasksToDelete)
                 }
             }
         }
@@ -122,67 +118,3 @@ struct TaskRowView: View {
         }
     }
 }
-
-// MARK: - Migration Path to SwiftData
-/*
- When ready to migrate to SwiftData, follow these steps:
- 
- 1. Create SwiftData models:
- 
-    @Model
-    final class TodoItemModel {
-        @Attribute(.unique) var id: UUID
-        var title: String
-        var isCompleted: Bool
-        var createdAt: Date
-        var priority: Int
-        
-        init(id: UUID = UUID(), title: String, isCompleted: Bool = false,
-             createdAt: Date = Date(), priority: Int = 0) {
-            self.id = id
-            self.title = title
-            self.isCompleted = isCompleted
-            self.createdAt = createdAt
-            self.priority = priority
-        }
-    }
- 
- 2. Implement SwiftData Repository:
- 
-    final class SwiftDataRepository<DomainModel>: DataStoreProtocol {
-        typealias Entity = DomainModel
-        
-        private let modelContainer: ModelContainer
-        private let modelContext: ModelContext
-        
-        init(modelContainer: ModelContainer) {
-            self.modelContainer = modelContainer
-            self.modelContext = ModelContext(modelContainer)
-        }
-        
-        // Implement CRUD operations using SwiftData APIs
-    }
- 
- 3. Update Domain Model conformance:
- 
-    extension TodoItem {
-        func toSwiftDataModel() -> TodoItemModel {
-            TodoItemModel(id: id, title: title, isCompleted: isCompleted,
-                     createdAt: createdAt, priority: priority)
-        }
-        
-        static func fromSwiftDataModel(_ model: TodoItemModel) -> TodoItem {
-            TodoItem(id: model.id, title: model.title, isCompleted: model.isCompleted,
-                 createdAt: model.createdAt, priority: model.priority)
-        }
-    }
- 
- 4. Swap repository in ViewModel:
-    // Change from CoreDataRepository to SwiftDataRepository
-    init(repository: SwiftDataRepository<TodoItem> = SwiftDataRepository()) {
-        self.repository = repository
-    }
- 
- 5. The rest of your code remains unchanged!
- */
-

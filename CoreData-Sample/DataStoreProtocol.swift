@@ -5,6 +5,8 @@
 //  Created by islam moussa on 15/12/2025.
 //
 
+import Foundation
+
 
 // MARK: - Data Store Protocol
 /// Protocol defining CRUD operations - can be implemented by Core Data or SwiftData

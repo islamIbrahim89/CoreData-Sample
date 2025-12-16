@@ -1,3 +1,13 @@
+//
+//  SendablePredicate.swift
+//  CoreData-Sample
+//
+//  Created by islam moussa on 15/12/2025.
+//
+
+import Foundation
+
+
 // MARK: - Sendable Wrappers for Core Data Types
 /// Sendable wrapper for NSPredicate
 struct SendablePredicate: @unchecked Sendable {
@@ -5,14 +15,5 @@ struct SendablePredicate: @unchecked Sendable {
     
     init(_ predicate: NSPredicate?) {
         self.predicate = predicate
-    }
-}
-
-/// Sendable wrapper for NSSortDescriptor array
-struct SendableSortDescriptors: @unchecked Sendable {
-    let sortDescriptors: [NSSortDescriptor]?
-    
-    init(_ sortDescriptors: [NSSortDescriptor]?) {
-        self.sortDescriptors = sortDescriptors
     }
 }

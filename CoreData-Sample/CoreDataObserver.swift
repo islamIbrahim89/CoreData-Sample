@@ -1,6 +1,17 @@
+//
+//  CoreDataObserver.swift
+//  CoreData-Sample
+//
+//  Created by islam moussa on 15/12/2025.
+//
+
+import CoreData
+
+
 // MARK: - Core Data Observer Service
 @MainActor
-final class CoreDataObserver<DomainModel: ManagedObjectConvertible>: NSObject where DomainModel.ManagedObject: NSManagedObject {
+final class CoreDataObserver<DomainModel: ManagedObjectConvertible>: NSObject,
+                                                                     NSFetchedResultsControllerDelegate where DomainModel.ManagedObject: NSManagedObject {
     
     private let fetchedResultsController: NSFetchedResultsController<DomainModel.ManagedObject>
     private let onUpdate: ([DomainModel]) -> Void
@@ -20,11 +31,13 @@ final class CoreDataObserver<DomainModel: ManagedObjectConvertible>: NSObject wh
         fetchRequest.sortDescriptors = sortDescriptors
         fetchRequest.fetchBatchSize = 20
         
+        // ✅ Use nil cache for dynamic predicates to avoid stale data
+        // If you have static predicates, you could use a cache name for better performance
         self.fetchedResultsController = NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: context,
             sectionNameKeyPath: nil,
-            cacheName: nil // Use nil for dynamic predicates
+            cacheName: nil  // Use nil for dynamic predicates to avoid cache issues
         )
         
         super.init()
@@ -35,7 +48,7 @@ final class CoreDataObserver<DomainModel: ManagedObjectConvertible>: NSObject wh
             try fetchedResultsController.performFetch()
             notifyChanges()
         } catch {
-            print("Failed to perform initial fetch: \(error)")
+            print("❌ Failed to perform initial fetch: \(error)")
         }
     }
     
@@ -48,9 +61,8 @@ final class CoreDataObserver<DomainModel: ManagedObjectConvertible>: NSObject wh
         let domainModels = objects.map { DomainModel.fromManagedObject($0) }
         onUpdate(domainModels)
     }
-}
-
-extension CoreDataObserver: NSFetchedResultsControllerDelegate {
+    
+    // MARK: - NSFetchedResultsControllerDelegate
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         notifyChanges()
     }

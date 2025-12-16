@@ -9,7 +9,7 @@ import Foundation
 
 
 // MARK: - Example Domain Model
-struct TodoItem: Identifiable, Equatable {
+struct TodoItem: Identifiable, Equatable, Sendable {
     let id: UUID
     var title: String
     var isCompleted: Bool
