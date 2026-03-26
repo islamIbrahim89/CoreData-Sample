@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		CDD95E422EFC7DDF00352F21 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = CDD95E412EFC7DDF00352F21 /* Swinject */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		CD5924D82EE9A5A500091A35 /* CoreData-Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "CoreData-Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CDD95E422EFC7DDF00352F21 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = "CoreData-Sample";
 			packageProductDependencies = (
+				CDD95E412EFC7DDF00352F21 /* Swinject */,
 			);
 			productName = "CoreData-Sample";
 			productReference = CD5924D82EE9A5A500091A35 /* CoreData-Sample.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = CD5924CF2EE9A5A500091A35;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				CDD95E402EFC7DDF00352F21 /* XCRemoteSwiftPackageReference "Swinject" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CD5924D92EE9A5A500091A35 /* Products */;
 			projectDirPath = "";
@@ -332,6 +341,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CDD95E402EFC7DDF00352F21 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CDD95E412EFC7DDF00352F21 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CDD95E402EFC7DDF00352F21 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CD5924D02EE9A5A500091A35 /* Project object */;
 }

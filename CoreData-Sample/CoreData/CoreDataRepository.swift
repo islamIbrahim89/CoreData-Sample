@@ -158,20 +158,16 @@ extension CoreDataRepository {
         sortDescriptors: [NSSortDescriptor]? = nil
     ) -> AsyncStream<[Entity]> {
         AsyncStream { continuation in
-            Task { @MainActor in
-                let observer = CoreDataObserver<Entity>(
-                    context: coreDataStack.viewContext,  // Correct: always use viewContext for observation
-                    predicate: predicate,
-                    sortDescriptors: sortDescriptors ?? []
-                ) { updatedEntities in
-                    continuation.yield(updatedEntities)
-                }
-                
-                // Keep observer alive by capturing it strongly
-                continuation.onTermination = { @Sendable [observer] _ in
-                    // Observer will be deallocated when stream terminates
-                    _ = observer
-                }
+            let observer = CoreDataObserver<Entity>(
+                context: coreDataStack.viewContext,
+                predicate: predicate,
+                sortDescriptors: sortDescriptors ?? []
+            ) { updatedEntities in
+                continuation.yield(updatedEntities)
+            }
+            
+            continuation.onTermination = { @Sendable [observer] _ in
+                _ = observer
             }
         }
     }

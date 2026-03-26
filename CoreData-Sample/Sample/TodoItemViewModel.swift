@@ -12,7 +12,7 @@ import Combine
 
 // MARK: - View Model Pattern
 @MainActor
-final class TodoItemViewModel: NSObject, ObservableObject {
+final class TodoItemViewModel: ObservableObject {
     @Published var tasks: [TodoItem] = []
     @Published var isLoading = false
     @Published var errorMessage: String?
@@ -22,12 +22,7 @@ final class TodoItemViewModel: NSObject, ObservableObject {
     
     init(repository: CoreDataRepository<TodoItem>) {
         self.repository = repository
-        super.init()
         startObserving()
-    }
-    
-    convenience override init() {
-        self.init(repository: CoreDataRepository())
     }
     
     private func startObserving() {

@@ -11,7 +11,11 @@ import Combine
 
 // MARK: - Example SwiftUI View
 struct TaskListView: View {
-    @StateObject private var viewModel = TodoItemViewModel()
+    @StateObject private var viewModel: TodoItemViewModel
+    
+    init(viewModel: TodoItemViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     @State private var newTaskTitle = ""
     
